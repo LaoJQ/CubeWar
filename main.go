@@ -35,11 +35,17 @@ func main() {
     if len(os.Args) >= 2 {
         rotation := NewRotation()
         rotation.num = len(os.Args[1])
+
+        missile := NewMissile()
+        missile.num = 10
         for _, op := range []byte(os.Args[1]) {
             if act, ok := ActionsMap[op]; ok {
                 rotation.handleFace = act.face
                 rotation.clockWise = act.orien
                 rotation.Use(cube)
+
+                missile.selfFace = act.face
+                missile.Use(cube)
             }
         }
     }

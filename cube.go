@@ -15,11 +15,12 @@ type Square struct {
 
     id int // 道具Id
     batteryOrien int // 炮台朝向, 当前炮台朝向[]RotateRule索引
+    batteryHP int // 炮台生命值
 }
 
 // 道具接口
 type Proper interface {
-    Use(*Cube)
+    Use(*Cube) error
 }
 
 
@@ -33,6 +34,7 @@ func NewCube() *Cube {
             oneFace[j].color = ColorQueue[i]
         }
         oneFace[8].batteryOrien = Rand.Number(4)
+        oneFace[8].batteryHP = 5
         cube.face = append(cube.face, oneFace)
     }
     return cube
@@ -44,7 +46,7 @@ func (cube *Cube) Print() {
         for _, square := range cube.face[i] {
             squares = append(squares, square.color)
         }
-        fmt.Println(string(squares), RotateRules[i][cube.face[i][8].batteryOrien].faceIdx)
+        fmt.Println(string(squares), RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8])
     }
     fmt.Println("---------------")
 }
