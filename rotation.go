@@ -10,7 +10,7 @@ type Rotation struct {
     num int // 剩余道具数
 
     // 使用参数
-    handleFace int // 面索引, [0,1,2,3,4,5]
+    selfFace int // 面索引, [0,1,2,3,4,5]
     clockWise bool // 顺时针true, 逆时针false
 }
 
@@ -73,7 +73,7 @@ var RotateRules [][]RotateRule = [][]RotateRule{
 }
 
 func rotate(cube *Cube, rotation *Rotation) {
-    rules := RotateRules[rotation.handleFace]
+    rules := RotateRules[rotation.selfFace]
     sideMove, topMove, batteryMove := 3, 6, 1
     if !rotation.clockWise {
         sideMove, topMove, batteryMove = 1, 2, 3
@@ -89,7 +89,7 @@ func rotate(cube *Cube, rotation *Rotation) {
         cube.face[rules[(3+sideMove)%4].faceIdx][rules[(3+sideMove)%4].gridIdx[i]]
     }
     
-    cFace := cube.face[rotation.handleFace]
+    cFace := cube.face[rotation.selfFace]
     cFace[0], cFace[1], cFace[2], cFace[3], cFace[4], cFace[5], cFace[6], cFace[7] =
         cFace[(0+topMove)%8],cFace[(1+topMove)%8],cFace[(2+topMove)%8],cFace[(3+topMove)%8],cFace[(4+topMove)%8],cFace[(5+topMove)%8],cFace[(6+topMove)%8],cFace[(7+topMove)%8]
 

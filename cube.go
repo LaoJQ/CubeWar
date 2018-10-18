@@ -14,6 +14,7 @@ const (
 // 魔方整体数据结构
 type Cube struct {
     face [][]Square
+    roles []*Role
 }
 
 // 单个格子数据
@@ -43,12 +44,13 @@ func NewCube() *Cube {
                 oneFace[j].propId = PROP_BATTERY
             } else {
                 oneFace[j].propId = Rand.Number(1, PROP_TOTAL_NUM)
+                oneFace[8].batteryOrien = Rand.Number(4)
+                oneFace[8].batteryHP = 5
             }
         }
-        oneFace[8].batteryOrien = Rand.Number(4)
-        oneFace[8].batteryHP = 5
         
         cube.face = append(cube.face, oneFace)
+        cube.roles = append(cube.roles, NewRole(i))
     }
     return cube
 }
@@ -69,7 +71,7 @@ func (cube *Cube) Print() {
         for _, square := range cube.face[i] {
             fmt.Printf("[%+v] ", square.propId)
         }
-        fmt.Printf("batteryOrien:%+v, batteryHP:%+v\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP)
+        fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx)
     }
     fmt.Println("---------------")
 }

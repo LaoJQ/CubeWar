@@ -33,19 +33,20 @@ func main() {
     cube := NewCube()
     cube.Print()
     if len(os.Args) >= 2 {
-        rotation := NewRotation()
-        rotation.num = len(os.Args[1])
-
-        missile := NewMissile()
-        missile.num = 10
+        for _, role := range cube.roles {
+            role.propRotation.num = len(os.Args[1])
+            role.propMissile.num = 10
+        }
         for _, op := range []byte(os.Args[1]) {
             if act, ok := ActionsMap[op]; ok {
-                rotation.handleFace = act.face
-                rotation.clockWise = act.orien
-                rotation.Use(cube)
+                face := cube.roles[act.face]
 
-                missile.selfFace = act.face
-                missile.Use(cube)
+                face.propRotation.clockWise = act.orien
+                face.propRotation.Use(cube)
+
+                face.propMissile.Use(cube)
+
+                face.propDice.Use(cube)
             }
         }
     }
