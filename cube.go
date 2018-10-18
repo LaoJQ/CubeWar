@@ -4,6 +4,13 @@ import (
     "fmt"    
 )
 
+const PROP_TOTAL_NUM = 3
+const (
+    PROP_BATTERY = iota // 炮台
+    PROP_ROTATE // 旋转
+    PROP_MISSILE // 导弹
+)
+
 // 魔方整体数据结构
 type Cube struct {
     face [][]Square
@@ -13,7 +20,7 @@ type Cube struct {
 type Square struct {
     color byte // just for test
 
-    id int // 道具Id
+    propId int // 道具Id
     batteryOrien int // 炮台朝向, 当前炮台朝向[]RotateRule索引
     batteryHP int // 炮台生命值
 }
@@ -32,21 +39,37 @@ func NewCube() *Cube {
         oneFace := make([]Square, 9)
         for j:=0; j<9; j++ {
             oneFace[j].color = ColorQueue[i]
+            if j == 8{
+                oneFace[j].propId = PROP_BATTERY
+            } else {
+                oneFace[j].propId = Rand.Number(1, PROP_TOTAL_NUM)
+            }
         }
         oneFace[8].batteryOrien = Rand.Number(4)
         oneFace[8].batteryHP = 5
+        
         cube.face = append(cube.face, oneFace)
     }
     return cube
 }
 
+// func (cube *Cube) Print() {
+//     for i:=0; i<6; i++ {
+//         squares := make([]byte, 9)
+//         for _, square := range cube.face[i] {
+//             squares = append(squares, square.color)
+//         }
+//         fmt.Println(string(squares), RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8])
+//     }
+//     fmt.Println("---------------")
+// }
+
 func (cube *Cube) Print() {
     for i:=0; i<6; i++ {
-        squares := make([]byte, 9)
         for _, square := range cube.face[i] {
-            squares = append(squares, square.color)
+            fmt.Printf("[%+v] ", square.propId)
         }
-        fmt.Println(string(squares), RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8])
+        fmt.Printf("batteryOrien:%+v, batteryHP:%+v\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP)
     }
     fmt.Println("---------------")
 }
