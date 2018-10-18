@@ -21,3 +21,17 @@ func NewRole(face int) *Role {
         propDice : &Dice{selfFace : face},
     }
 }
+
+func (role *Role) Move(cube *Cube, point int) {
+    newSquareIdx := (role.squareIdx+point)%8
+
+    newSquarePorpId := cube.face[role.faceIdx][newSquareIdx].propId
+    switch newSquarePorpId {
+    case PROP_ROTATE:
+        role.propRotation.num++
+    case PROP_MISSILE:
+        role.propMissile.num++
+    }
+    
+    role.squareIdx = newSquareIdx
+}

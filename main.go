@@ -48,7 +48,7 @@ func main() {
 
                 face.propDice.Use(cube)
             }
+            cube.Print()
         }
     }
-    cube.Print()
 }

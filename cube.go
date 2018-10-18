@@ -71,7 +71,7 @@ func (cube *Cube) Print() {
         for _, square := range cube.face[i] {
             fmt.Printf("[%+v] ", square.propId)
         }
-        fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx)
+        fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
     }
     fmt.Println("---------------")
 }
