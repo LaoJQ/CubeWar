@@ -22,8 +22,6 @@ type Square struct {
     color byte // just for test
 
     propId int // 道具Id
-    batteryOrien int // 炮台朝向, 当前炮台朝向[]RotateRule索引
-    batteryHP int // 炮台生命值
 }
 
 // 道具接口
@@ -38,15 +36,9 @@ func NewCube() *Cube {
     cube := new(Cube)
     for i:=0; i<6; i++ {
         oneFace := make([]Square, 9)
-        for j:=0; j<9; j++ {
+        for j:=0; j<8; j++ {
             oneFace[j].color = ColorQueue[i]
-            if j == 8{
-                oneFace[j].propId = PROP_BATTERY
-            } else {
-                oneFace[j].propId = Rand.Number(1, PROP_TOTAL_NUM)
-                oneFace[8].batteryOrien = Rand.Number(4)
-                oneFace[8].batteryHP = 5
-            }
+            oneFace[j].propId = Rand.Number(1, PROP_TOTAL_NUM)
         }
         
         cube.face = append(cube.face, oneFace)
@@ -55,24 +47,13 @@ func NewCube() *Cube {
     return cube
 }
 
-// func (cube *Cube) Print() {
-//     for i:=0; i<6; i++ {
-//         squares := make([]byte, 9)
-//         for _, square := range cube.face[i] {
-//             squares = append(squares, square.color)
-//         }
-//         fmt.Println(string(squares), RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8])
-//     }
-//     fmt.Println("---------------")
-// }
-
 func (cube *Cube) Print() {
     fmt.Printf("|0   1   2   3   4   5   6   7   8|\n|-   -   -   -   -   -   -   -   -|\n")
     for i:=0; i<6; i++ {
         for _, square := range cube.face[i] {
             fmt.Printf("[%+v] ", square.propId)
         }
-        fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
+        fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
     }
     fmt.Println("---------------------------------------------")
 }
@@ -83,7 +64,7 @@ func (cube *Cube) HttpPrint() string {
         for _, square := range cube.face[i] {
             ret += fmt.Sprintf("[%+v] ", square.propId)
         }
-        ret += fmt.Sprintf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
+        ret += fmt.Sprintf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
     }
     ret += fmt.Sprintf("---------------------------------------------")
     return ret

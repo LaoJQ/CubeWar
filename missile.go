@@ -21,8 +21,8 @@ func (missile *Missile) Use(cube *Cube) (_ string, err error) {
     }
     missile.num--
 
-    targetFace := RotateRules[missile.selfFace][cube.face[missile.selfFace][8].batteryOrien].faceIdx
-    cube.face[targetFace][8].batteryHP--
+    targetFace := RotateRules[missile.selfFace][cube.roles[missile.selfFace].batteryOrien].faceIdx
+    cube.roles[targetFace].batteryHP--
     return
 }
 
