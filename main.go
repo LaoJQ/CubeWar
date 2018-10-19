@@ -3,6 +3,7 @@ package main
 import (
     "net/http"
     "strconv"
+    "time"
     "github.com/gin-gonic/gin"
 )
 
@@ -37,6 +38,7 @@ func main() {
             gCube.Print()
             retCh <- gCube.HttpPrint()
         case <- closeCh:
+            time.Sleep(time.Millisecond)
             return
         }
     }
