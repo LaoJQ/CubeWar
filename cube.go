@@ -28,7 +28,7 @@ type Square struct {
 
 // 道具接口
 type Proper interface {
-    Use(*Cube) error
+    Use(*Cube) (string, error)
 }
 
 
@@ -74,4 +74,16 @@ func (cube *Cube) Print() {
         fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
     }
     fmt.Println("---------------")
+}
+
+func (cube *Cube) HttpPrint() string {
+    var ret string
+    for i:=0; i<6; i++ {
+        for _, square := range cube.face[i] {
+            ret += fmt.Sprintf("[%+v] ", square.propId)
+        }
+        ret += fmt.Sprintf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
+    }
+    ret += fmt.Sprintf("---------------")
+    return ret
 }

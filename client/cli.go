@@ -7,6 +7,8 @@ import (
     "os"
 )
 
+const BaseUrl = "http://127.0.0.1:8090/"
+
 func main() {
     if len(os.Args) < 2 {
         fmt.Println("need args")
@@ -16,17 +18,19 @@ func main() {
     var url string
     switch act {
     case "r":
-        url = fmt.Sprintf("http://127.0.0.1:8090/act/rotation?face=%s&clockWise=%s", os.Args[2], os.Args[3])
+        url = fmt.Sprintf(BaseUrl+"act/rotation?face=%s&clockWise=%s", os.Args[2], os.Args[3])
     case "m":
-        url = fmt.Sprintf("http://127.0.0.1:8090/act/missile?face=%s", os.Args[2])
+        url = fmt.Sprintf(BaseUrl+"act/missile?face=%s", os.Args[2])
     case "d":
-        url = fmt.Sprintf("http://127.0.0.1:8090/act/dice?face=%s", os.Args[2])
+        url = fmt.Sprintf(BaseUrl+"act/dice?face=%s", os.Args[2])
     case "print":
-        url = "http://127.0.0.1:8090/print"
+        url = BaseUrl+"print"
     case "close":
-        url = "http://127.0.0.1:8090/close"
+        url = BaseUrl+"close"
     case "ping":
-        url = "http://127.0.0.1:8090/ping"
+        url = BaseUrl+"ping"
+    case "show":
+        url = BaseUrl+"show"
     default:
         fmt.Println("act err")
         return

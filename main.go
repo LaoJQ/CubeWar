@@ -8,9 +8,17 @@ import (
 
 var gCube *Cube = NewCube()
 
-var httpDataCh chan Proper = make(chan Proper, 1)
+type http2room struct {
+    p Proper
+    c *gin.Context
+    retCh chan struct{}
+}
+
+var httpDataCh chan *http2room = make(chan *http2room, 1)
 var closeCh chan struct{} = make(chan struct{}, 1)
 var printCh chan struct{} = make(chan struct{}, 1)
+
+const RESP = "respone"
 
 func main() {
     gCube.Print()
@@ -18,9 +26,16 @@ func main() {
 
     for {
         select {
-        case proper :=<- httpDataCh:
-            proper.Use(gCube)
-            gCube.Print()
+        case h2r :=<- httpDataCh:
+            retStr, err := h2r.p.Use(gCube)
+            if err != nil {
+                h2r.c.Set(RESP, err.Error())
+                h2r.retCh <- struct{}{}
+                continue
+            }
+            str := gCube.HttpPrint()
+            h2r.c.Set(RESP, retStr+str)
+            h2r.retCh <- struct{}{}
         case <- printCh:
             gCube.Print()
         case <- closeCh:
@@ -45,6 +60,10 @@ func StartHttp() {
     router.GET("/print", func(c *gin.Context) {
         printCh <- struct{}{}
         c.JSON(http.StatusOK, gin.H{"msg": "print"})
+    })
+
+    router.GET("/show", func(c *gin.Context) {
+        c.String(http.StatusOK, gCube.HttpPrint())
     })
 
     faceGroup := router.Group("/act")
@@ -85,26 +104,42 @@ func actRotation(c *gin.Context) {
         if clockWiseStr == "true" {
             clockWise = true
         }
-        face := c.GetInt(PARAM_FACE)
-        propRotation := gCube.roles[face].propRotation
-        propRotation.clockWise = clockWise
-        httpDataCh <- propRotation
-        c.JSON(http.StatusOK, gin.H{"msg": "maybe ok"})
+        proper := gCube.roles[c.GetInt(PARAM_FACE)].propRotation
+        proper.clockWise = clockWise
+        h2r := &http2room{
+            p : proper,
+            c : c,
+            retCh : make(chan struct{}, 1),
+        }
+        httpDataCh <- h2r
+        <-h2r.retCh
+        retStr, _ := c.Get(RESP)
+        c.String(http.StatusOK, "%s", retStr)
         return
     }
-    c.JSON(http.StatusOK, gin.H{"msg": "clockWise参数不存在"})
+    c.String(http.StatusOK, "clockWise参数不存在")
 }
 
 func actMissile(c *gin.Context) {
-    face := c.GetInt(PARAM_FACE)
-    propRotation := gCube.roles[face].propMissile
-    httpDataCh <- propRotation
-    c.JSON(http.StatusOK, gin.H{"msg": "maybe ok"})
+    h2r := &http2room{
+        p : gCube.roles[c.GetInt(PARAM_FACE)].propMissile,
+        c : c,
+        retCh : make(chan struct{}, 1),
+    }
+    httpDataCh <- h2r
+    <-h2r.retCh
+    retStr, _ := c.Get(RESP)
+    c.String(http.StatusOK, "%s", retStr)
 }
 
 func actDice(c *gin.Context) {
-    face := c.GetInt(PARAM_FACE)
-    propRotation := gCube.roles[face].propDice
-    httpDataCh <- propRotation
-    c.JSON(http.StatusOK, gin.H{"msg": "maybe ok"})
+    h2r := &http2room{
+        p : gCube.roles[c.GetInt(PARAM_FACE)].propDice,
+        c : c,
+        retCh : make(chan struct{}, 1),
+    }
+    httpDataCh <- h2r
+    <-h2r.retCh
+    retStr, _ := c.Get(RESP)
+    c.String(http.StatusOK, "%s", retStr)
 }

@@ -10,13 +10,11 @@ type Dice struct {
     selfFace int // 面索引, [0,1,2,3,4,5]
 }
 
-func (dice *Dice) Use(cube *Cube) error {
+func (dice *Dice) Use(cube *Cube) (string, error) {
     point := Rand.Number(1, 7)
-    fmt.Println("dice point: ", point)
-
     role := cube.roles[dice.selfFace]
     role.Move(cube, point)
-    return nil
+    return fmt.Sprintln("dice point: ", point), nil
 }
 
 func NewDice() *Dice {

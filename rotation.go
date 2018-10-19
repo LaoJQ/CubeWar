@@ -14,14 +14,15 @@ type Rotation struct {
     clockWise bool // 顺时针true, 逆时针false
 }
 
-func (rotation *Rotation) Use(cube *Cube) error {
+func (rotation *Rotation) Use(cube *Cube) (_ string, err error) {
     if rotation.num <= 0 {
         fmt.Println("Rotation.num =< 0")
-        return errors.New("Rotation.num =< 0")
+        err = errors.New("[ERR] Rotation.num =< 0")
+        return
     }
     rotation.num--
     rotate(cube, rotation)
-    return nil
+    return
 }
 
 func NewRotation() *Rotation {
