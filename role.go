@@ -16,13 +16,15 @@ type Role struct {
     propDice *Dice // 道具:骰子
 }
 
+const MAX_HP = 5
+
 func NewRole(face int) *Role {
     return &Role{
         faceIdx : face,
         squareIdx : Rand.Number(8),
 
         batteryOrien : Rand.Number(4),
-        batteryHP : 5,
+        batteryHP : MAX_HP,
         
         propRotation : &Rotation{selfFace : face},
         propMissile : &Missile{selfFace : face},
@@ -39,6 +41,10 @@ func (role *Role) Move(cube *Cube, point int) {
         role.propRotation.num++
     case PROP_MISSILE:
         role.propMissile.num++
+    case PROP_BLOOD:
+        if role.batteryHP < MAX_HP {
+            role.batteryHP++
+        }
     }
     
     role.squareIdx = newSquareIdx

@@ -4,11 +4,12 @@ import (
     "fmt"    
 )
 
-const PROP_TOTAL_NUM = 3
+const PROP_TOTAL_NUM = 4
 const (
     PROP_BATTERY = iota // 炮台
     PROP_ROTATE // 旋转
     PROP_MISSILE // 导弹
+    PROP_BLOOD // 回血
 )
 
 // 魔方整体数据结构
