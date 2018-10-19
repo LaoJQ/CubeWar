@@ -36,7 +36,7 @@ var ColorQueue []byte = []byte{'Y','W','B','G','O','R'}
 func NewCube() *Cube {
     cube := new(Cube)
     for i:=0; i<6; i++ {
-        oneFace := make([]Square, 9)
+        oneFace := make([]Square, 8)
         for j:=0; j<8; j++ {
             oneFace[j].color = ColorQueue[i]
             oneFace[j].propId = Rand.Number(1, PROP_TOTAL_NUM)
@@ -49,7 +49,7 @@ func NewCube() *Cube {
 }
 
 func (cube *Cube) Print() {
-    fmt.Printf("|0   1   2   3   4   5   6   7   8|\n|-   -   -   -   -   -   -   -   -|\n")
+    fmt.Printf("|0   1   2   3   4   5   6   7|\n|-   -   -   -   -   -   -   -|\n")
     for i:=0; i<6; i++ {
         for _, square := range cube.face[i] {
             fmt.Printf("[%+v] ", square.propId)
@@ -60,7 +60,7 @@ func (cube *Cube) Print() {
 }
 
 func (cube *Cube) HttpPrint() string {
-    var ret string = "|0   1   2   3   4   5   6   7   8|\n|-   -   -   -   -   -   -   -   -|\n"
+    var ret string = "|0   1   2   3   4   5   6   7|\n|-   -   -   -   -   -   -   -|\n"
     for i:=0; i<6; i++ {
         for _, square := range cube.face[i] {
             ret += fmt.Sprintf("[%+v] ", square.propId)
