@@ -29,8 +29,6 @@ func main() {
         url = BaseUrl+"close"
     case "ping":
         url = BaseUrl+"ping"
-    case "show":
-        url = BaseUrl+"show"
     default:
         fmt.Println("act err")
         return

@@ -6,21 +6,21 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-var gCube *Cube = NewCube()
+var gCube *Cube
 
 type http2room struct {
     p Proper
-    c *gin.Context
-    retCh chan struct{}
+    retCh chan string
 }
 
 var httpDataCh chan *http2room = make(chan *http2room, 1)
 var closeCh chan struct{} = make(chan struct{}, 1)
-var printCh chan struct{} = make(chan struct{}, 1)
+var printCh chan chan string = make(chan chan string, 1)
 
 const RESP = "respone"
 
 func main() {
+    gCube = NewCube()
     gCube.Print()
     go StartHttp()
 
@@ -29,15 +29,13 @@ func main() {
         case h2r :=<- httpDataCh:
             retStr, err := h2r.p.Use(gCube)
             if err != nil {
-                h2r.c.Set(RESP, err.Error())
-                h2r.retCh <- struct{}{}
+                h2r.retCh <- err.Error()
                 continue
             }
-            str := gCube.HttpPrint()
-            h2r.c.Set(RESP, retStr+str)
-            h2r.retCh <- struct{}{}
-        case <- printCh:
+            h2r.retCh <- retStr+gCube.HttpPrint()
+        case retCh :=<- printCh:
             gCube.Print()
+            retCh <- gCube.HttpPrint()
         case <- closeCh:
             return
         }
@@ -58,12 +56,9 @@ func StartHttp() {
     })
 
     router.GET("/print", func(c *gin.Context) {
-        printCh <- struct{}{}
-        c.JSON(http.StatusOK, gin.H{"msg": "print"})
-    })
-
-    router.GET("/show", func(c *gin.Context) {
-        c.String(http.StatusOK, gCube.HttpPrint())
+        retCh := make(chan string, 1)
+        printCh <- retCh
+        c.String(http.StatusOK, <-retCh)
     })
 
     faceGroup := router.Group("/act")
@@ -108,13 +103,11 @@ func actRotation(c *gin.Context) {
         proper.clockWise = clockWise
         h2r := &http2room{
             p : proper,
-            c : c,
-            retCh : make(chan struct{}, 1),
+            retCh : make(chan string, 1),
         }
         httpDataCh <- h2r
-        <-h2r.retCh
-        retStr, _ := c.Get(RESP)
-        c.String(http.StatusOK, "%s", retStr)
+        retStr :=<- h2r.retCh
+        c.String(http.StatusOK, retStr)
         return
     }
     c.String(http.StatusOK, "clockWise参数不存在")
@@ -123,23 +116,19 @@ func actRotation(c *gin.Context) {
 func actMissile(c *gin.Context) {
     h2r := &http2room{
         p : gCube.roles[c.GetInt(PARAM_FACE)].propMissile,
-        c : c,
-        retCh : make(chan struct{}, 1),
+        retCh : make(chan string, 1),
     }
     httpDataCh <- h2r
-    <-h2r.retCh
-    retStr, _ := c.Get(RESP)
-    c.String(http.StatusOK, "%s", retStr)
+    retStr :=<- h2r.retCh
+    c.String(http.StatusOK, retStr)
 }
 
 func actDice(c *gin.Context) {
     h2r := &http2room{
         p : gCube.roles[c.GetInt(PARAM_FACE)].propDice,
-        c : c,
-        retCh : make(chan struct{}, 1),
+        retCh : make(chan string, 1),
     }
     httpDataCh <- h2r
-    <-h2r.retCh
-    retStr, _ := c.Get(RESP)
-    c.String(http.StatusOK, "%s", retStr)
+    retStr :=<- h2r.retCh
+    c.String(http.StatusOK, retStr)
 }
