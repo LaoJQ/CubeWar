@@ -19,7 +19,7 @@ type Role struct {
 func NewRole(face int) *Role {
     return &Role{
         faceIdx : face,
-        squareIdx : 0,
+        squareIdx : Rand.Number(8),
 
         batteryOrien : Rand.Number(4),
         batteryHP : 5,
