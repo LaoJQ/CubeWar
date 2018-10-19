@@ -67,23 +67,24 @@ func NewCube() *Cube {
 // }
 
 func (cube *Cube) Print() {
+    fmt.Printf("|0   1   2   3   4   5   6   7   8|\n|-   -   -   -   -   -   -   -   -|\n")
     for i:=0; i<6; i++ {
         for _, square := range cube.face[i] {
             fmt.Printf("[%+v] ", square.propId)
         }
         fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
     }
-    fmt.Println("---------------")
+    fmt.Println("---------------------------------------------")
 }
 
 func (cube *Cube) HttpPrint() string {
-    var ret string
+    var ret string = "|0   1   2   3   4   5   6   7   8|\n|-   -   -   -   -   -   -   -   -|\n"
     for i:=0; i<6; i++ {
         for _, square := range cube.face[i] {
             ret += fmt.Sprintf("[%+v] ", square.propId)
         }
         ret += fmt.Sprintf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.face[i][8].batteryOrien].faceIdx, cube.face[i][8].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
     }
-    ret += fmt.Sprintf("---------------")
+    ret += fmt.Sprintf("---------------------------------------------")
     return ret
 }
