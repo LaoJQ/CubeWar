@@ -2,18 +2,22 @@ package main
 
 import (
     "fmt"
-    // "error"
+    "errors"
 )
 
 type Dice struct {
+    // 属性
+    *Role
+    
     // 使用参数
-    selfFace int // 面索引, [0,1,2,3,4,5]
 }
 
 func (dice *Dice) Use(cube *Cube) (string, error) {
+    if !RoleFace(dice.Role.faceIdx) {
+        return "", errors.New("[ERR] handle face is not a role face")
+    }
     point := Rand.Number(1, 7)
-    role := cube.roles[dice.selfFace]
-    role.Move(cube, point)
+    dice.Role.Move(cube, point)
     return fmt.Sprintln("dice point: ", point), nil
 }
 

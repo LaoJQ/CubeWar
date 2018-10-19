@@ -54,7 +54,11 @@ func (cube *Cube) Print() {
         for _, square := range cube.face[i] {
             fmt.Printf("[%+v] ", square.propId)
         }
-        fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
+        if RoleFace(i) {
+            fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
+        } else {
+            fmt.Println("")
+        }
     }
     fmt.Println("---------------------------------------------")
 }
@@ -65,7 +69,11 @@ func (cube *Cube) HttpPrint() string {
         for _, square := range cube.face[i] {
             ret += fmt.Sprintf("[%+v] ", square.propId)
         }
-        ret += fmt.Sprintf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
+        if RoleFace(i) {
+            ret += fmt.Sprintf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num)
+        } else {
+            ret += "\n"
+        }
     }
     ret += fmt.Sprintf("---------------------------------------------")
     return ret

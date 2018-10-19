@@ -79,6 +79,7 @@ func StartHttp() {
 }
 
 const PARAM_FACE = "face"
+const PARAM_TARGET = "target"
 const PARAM_CLOCKWISE = "clockWise"
 
 func getFace(c *gin.Context) {
@@ -95,24 +96,29 @@ func getFace(c *gin.Context) {
 }
 
 func actRotation(c *gin.Context) {
-    clockWiseStr, ok := c.GetQuery(PARAM_CLOCKWISE)
-    if ok {
-        var clockWise bool
-        if clockWiseStr == "true" {
-            clockWise = true
+    targetStr, ok1 := c.GetQuery(PARAM_TARGET)
+    clockWiseStr, ok2 := c.GetQuery(PARAM_CLOCKWISE)
+    if ok1 && ok2 {
+        target, err := strconv.Atoi(targetStr)
+        if err == nil {
+            var clockWise bool
+            if clockWiseStr == "true" {
+                clockWise = true
+            }
+            proper := gCube.roles[c.GetInt(PARAM_FACE)].propRotation
+            proper.targetFace = target
+            proper.clockWise = clockWise
+            h2r := &http2room{
+                p : proper,
+                retCh : make(chan string, 1),
+            }
+            httpDataCh <- h2r
+            retStr :=<- h2r.retCh
+            c.String(http.StatusOK, retStr)
+            return
         }
-        proper := gCube.roles[c.GetInt(PARAM_FACE)].propRotation
-        proper.clockWise = clockWise
-        h2r := &http2room{
-            p : proper,
-            retCh : make(chan string, 1),
-        }
-        httpDataCh <- h2r
-        retStr :=<- h2r.retCh
-        c.String(http.StatusOK, retStr)
-        return
     }
-    c.String(http.StatusOK, "clockWise参数不存在")
+    c.String(http.StatusOK, "不正确参数")
 }
 
 func actMissile(c *gin.Context) {

@@ -18,7 +18,7 @@ func main() {
     var url string
     switch act {
     case "r":
-        url = fmt.Sprintf(BaseUrl+"act/rotation?face=%s&clockWise=%s", os.Args[2], os.Args[3])
+        url = fmt.Sprintf(BaseUrl+"act/rotation?face=%s&target=%s&clockWise=%s", os.Args[2], os.Args[3], os.Args[4])
     case "m":
         url = fmt.Sprintf(BaseUrl+"act/missile?face=%s", os.Args[2])
     case "d":

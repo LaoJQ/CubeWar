@@ -19,16 +19,25 @@ type Role struct {
 const MAX_HP = 5
 
 func NewRole(face int) *Role {
-    return &Role{
+    role := &Role{
         faceIdx : face,
         squareIdx : Rand.Number(8),
 
         batteryOrien : Rand.Number(4),
         batteryHP : MAX_HP,
-        
-        propRotation : &Rotation{selfFace : face},
-        propMissile : &Missile{selfFace : face},
-        propDice : &Dice{selfFace : face},
+    }
+    role.propRotation = &Rotation{Role : role}
+    role.propMissile = &Missile{Role : role}
+    role.propDice = &Dice{Role : role}
+    return role
+}
+
+// 0,2,4面才有玩家
+func RoleFace(face int) bool {
+    if face%2 == 0 {
+        return true
+    } else {
+        return false
     }
 }
 
