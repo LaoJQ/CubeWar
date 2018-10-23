@@ -51,7 +51,7 @@ var RotateRules [][]RotateRule = [][]RotateRule{
     []RotateRule{
         RotateRule{0, []int{0,7,6}},
         RotateRule{5, []int{2,1,0}},
-        RotateRule{1, []int{6,7,0}},
+        RotateRule{1, []int{4,3,2}},
         RotateRule{4, []int{6,5,4}},
     },
     []RotateRule{
