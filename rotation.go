@@ -95,5 +95,7 @@ func rotate(cube *Cube, rotation *Rotation) {
     cFace[0], cFace[1], cFace[2], cFace[3], cFace[4], cFace[5], cFace[6], cFace[7] =
         cFace[(0+topMove)%8],cFace[(1+topMove)%8],cFace[(2+topMove)%8],cFace[(3+topMove)%8],cFace[(4+topMove)%8],cFace[(5+topMove)%8],cFace[(6+topMove)%8],cFace[(7+topMove)%8]
 
-    cube.roles[rotation.targetFace].batteryOrien = (cube.roles[rotation.targetFace].batteryOrien + batteryMove)%4
+    if RoleFace(rotation.targetFace) {
+        cube.roles[rotation.targetFace].batteryOrien = (cube.roles[rotation.targetFace].batteryOrien + batteryMove)%4
+    }
 }
