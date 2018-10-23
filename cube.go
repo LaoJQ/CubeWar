@@ -44,12 +44,16 @@ func NewCube() *Cube {
             if newRole != nil && newRole.squareIdx == i { // 初始角色所在格子没有道具
                 continue
             }
-            oneFace[j].propId = Rand.Number(1, PROP_TOTAL_NUM)
+            oneFace[j].propId = GenProp()
         }
         cube.face = append(cube.face, oneFace)
         cube.roles = append(cube.roles, NewRole(i))
     }
     return cube
+}
+
+func GenProp() int {
+    return Rand.Number(1, PROP_TOTAL_NUM)
 }
 
 func (cube *Cube) Print() {

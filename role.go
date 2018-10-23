@@ -57,6 +57,7 @@ func (role *Role) Move(cube *Cube, point int) {
             role.batteryHP++
         }
     }
-    
+
+    cube.face[role.faceIdx][role.squareIdx].propId = GenProp()
     role.squareIdx = newSquareIdx
 }
