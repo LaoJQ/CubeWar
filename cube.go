@@ -41,13 +41,13 @@ func NewCube() *Cube {
         oneFace := make([]Square, 8)
         for j:=0; j<8; j++ {
             oneFace[j].color = ColorQueue[i]
-            if newRole != nil && newRole.squareIdx == i { // 初始角色所在格子没有道具
+            if newRole != nil && newRole.squareIdx == j { // 初始角色所在格子没有道具
                 continue
             }
             oneFace[j].propId = GenProp()
         }
         cube.face = append(cube.face, oneFace)
-        cube.roles = append(cube.roles, NewRole(i))
+        cube.roles = append(cube.roles, newRole)
     }
     return cube
 }
