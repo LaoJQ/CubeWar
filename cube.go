@@ -6,7 +6,8 @@ import (
 
 const PROP_TOTAL_NUM = 4
 const (
-    PROP_BATTERY = iota // 炮台
+    PROP_RUINED = iota - 1 // 被毁坏
+    PROP_NULL // 空白格子
     PROP_ROTATE // 旋转
     PROP_MISSILE // 导弹
     PROP_BLOOD // 回血
@@ -36,12 +37,15 @@ var ColorQueue []byte = []byte{'Y','W','B','G','O','R'}
 func NewCube() *Cube {
     cube := new(Cube)
     for i:=0; i<6; i++ {
+        newRole := NewRole(i)
         oneFace := make([]Square, 8)
         for j:=0; j<8; j++ {
             oneFace[j].color = ColorQueue[i]
+            if newRole != nil && newRole.squareIdx == i { // 初始角色所在格子没有道具
+                continue
+            }
             oneFace[j].propId = Rand.Number(1, PROP_TOTAL_NUM)
         }
-        
         cube.face = append(cube.face, oneFace)
         cube.roles = append(cube.roles, NewRole(i))
     }

@@ -15,9 +15,6 @@ type Missile struct {
 
 func (missile *Missile) Use(cube *Cube) (_ string, err error) {
     selfFace := missile.Role.faceIdx
-    if !RoleFace(selfFace) {
-        return "", errors.New("[ERR] handle face is not a role face")
-    }
     targetFace := RotateRules[selfFace][missile.Role.batteryOrien].faceIdx
     if !RoleFace(targetFace) {
         return "", errors.New("[ERR] target face is not a role face")

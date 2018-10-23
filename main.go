@@ -86,12 +86,13 @@ func getFace(c *gin.Context) {
     faceStr, ok := c.GetQuery(PARAM_FACE)
     if ok {
         face, err := strconv.Atoi(faceStr)
-        if err == nil {
+        // 该中间件保证了face上有role
+        if err == nil && RoleFace(face) {
             c.Set(PARAM_FACE, face)
             return
         }
     }
-    c.JSON(http.StatusOK, gin.H{"err": "face参数不存在"})
+    c.JSON(http.StatusOK, gin.H{"err": "face参数错误"})
     c.Abort()
 }
 
