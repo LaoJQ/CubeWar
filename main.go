@@ -66,9 +66,10 @@ func StartHttp() {
     faceGroup := router.Group("/act")
     faceGroup.Use(getFace)
     
-    faceGroup.GET("/rotation", actRotation) // /act/rotation?face=0&clockWise=true
+    faceGroup.GET("/rotation", actRotation) // /act/rotation?face=0&target=0&clockWise=true
     faceGroup.GET("/missile", actMissile) // /act/missile?face=0
     faceGroup.GET("/dice", actDice)  // /act/dice?face=0
+    faceGroup.GET("/blood", actBlood)  // /act/blood?face=0
 
     srv := &http.Server{
         Addr:    "127.0.0.1:8090",
@@ -135,6 +136,16 @@ func actMissile(c *gin.Context) {
 func actDice(c *gin.Context) {
     h2r := &http2room{
         p : gCube.roles[c.GetInt(PARAM_FACE)].propDice,
+        retCh : make(chan string, 1),
+    }
+    httpDataCh <- h2r
+    retStr :=<- h2r.retCh
+    c.String(http.StatusOK, retStr)
+}
+
+func actBlood(c *gin.Context) {
+    h2r := &http2room{
+        p : gCube.roles[c.GetInt(PARAM_FACE)].propBlood,
         retCh : make(chan string, 1),
     }
     httpDataCh <- h2r

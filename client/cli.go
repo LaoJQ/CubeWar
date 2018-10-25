@@ -23,6 +23,8 @@ func main() {
         url = fmt.Sprintf(BaseUrl+"act/missile?face=%s", os.Args[2])
     case "d":
         url = fmt.Sprintf(BaseUrl+"act/dice?face=%s", os.Args[2])
+    case "b":
+        url = fmt.Sprintf(BaseUrl+"act/blood?face=%s", os.Args[2])
     case "print":
         url = BaseUrl+"print"
     case "close":

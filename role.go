@@ -14,6 +14,7 @@ type Role struct {
     propRotation *Rotation // 道具:旋转
     propMissile *Missile // 道具:导弹
     propDice *Dice // 道具:骰子
+    propBlood *Blood // 道具:回血
 }
 
 const MAX_HP = 5
@@ -30,6 +31,7 @@ func NewRole(face int) *Role {
         role.propRotation = &Rotation{Role : role}
         role.propMissile = &Missile{Role : role}
         role.propDice = &Dice{Role : role}
+        role.propBlood = &Blood{Role : role}
         return role
     }
     return nil
@@ -53,9 +55,7 @@ func (role *Role) Move(cube *Cube, point int) {
     case PROP_MISSILE:
         role.propMissile.num++
     case PROP_BLOOD:
-        if role.batteryHP < MAX_HP {
-            role.batteryHP++
-        }
+        role.propBlood.num++
     }
 
     cube.face[role.faceIdx][role.squareIdx].propId = GenProp()
