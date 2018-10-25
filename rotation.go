@@ -35,6 +35,8 @@ type RotateRule struct {
     gridIdx []int
 }
 
+// 顺时针后: idx=0重新刷新, idx=2清空
+// 逆时针后: idx=1重新刷新, idx=3清空
 var RotateRules [][]RotateRule = [][]RotateRule{
     []RotateRule{
         RotateRule{2, []int{4,3,2}},
@@ -76,9 +78,9 @@ var RotateRules [][]RotateRule = [][]RotateRule{
 
 func rotate(cube *Cube, rotation *Rotation) {
     rules := RotateRules[rotation.targetFace]
-    sideMove, topMove, batteryMove := 3, 6, 1
+    sideMove, topMove, batteryMove, refreshMove := 3, 6, 1, 0
     if !rotation.clockWise {
-        sideMove, topMove, batteryMove = 1, 2, 3
+        sideMove, topMove, batteryMove, refreshMove = 1, 2, 3, 1
     }
     for i:=0; i<3; i++ {
         cube.face[rules[0].faceIdx][rules[0].gridIdx[i]],
@@ -97,5 +99,10 @@ func rotate(cube *Cube, rotation *Rotation) {
 
     if RoleFace(rotation.targetFace) {
         cube.roles[rotation.targetFace].batteryOrien = (cube.roles[rotation.targetFace].batteryOrien + batteryMove)%4
+    }
+
+    refreshFace := rules[refreshMove].faceIdx
+    for _, refreshGrid := range rules[refreshMove].gridIdx {
+        cube.face[refreshFace][refreshGrid].propId = GenProp()
     }
 }

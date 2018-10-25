@@ -52,7 +52,7 @@ func GenProp() int {
 
 func (cube *Cube) Print() {
     fmt.Printf("|0   1   2   3   4   5   6   7|\n|-   -   -   -   -   -   -   -|\n")
-    for i:=0; i<6; i++ {
+    for i:=0; i<6; i+=2 {
         for _, square := range cube.face[i] {
             fmt.Printf("[%+v] ", square.propId)
         }
@@ -67,7 +67,7 @@ func (cube *Cube) Print() {
 
 func (cube *Cube) HttpPrint() string {
     var ret string = "|0   1   2   3   4   5   6   7|\n|-   -   -   -   -   -   -   -|\n"
-    for i:=0; i<6; i++ {
+    for i:=0; i<6; i+=2 {
         for _, square := range cube.face[i] {
             ret += fmt.Sprintf("[%+v] ", square.propId)
         }
