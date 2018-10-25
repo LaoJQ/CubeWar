@@ -30,6 +30,3 @@ func (missile *Missile) Use(cube *Cube) (_ string, err error) {
     return
 }
 
-func NewMissile() *Missile {
-    return &Missile{}
-}

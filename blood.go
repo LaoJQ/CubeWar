@@ -24,6 +24,3 @@ func (blood *Blood) Use(cube *Cube) (_ string, err error) {
     return
 }
 
-func NewBlood() *Blood {
-    return &Blood{}
-}

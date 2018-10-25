@@ -26,10 +26,6 @@ func (rotation *Rotation) Use(cube *Cube) (_ string, err error) {
     return
 }
 
-func NewRotation() *Rotation {
-    return &Rotation{}
-}
-
 type RotateRule struct {
     faceIdx int
     gridIdx []int

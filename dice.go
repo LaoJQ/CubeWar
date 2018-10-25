@@ -17,6 +17,3 @@ func (dice *Dice) Use(cube *Cube) (string, error) {
     return fmt.Sprintln("dice point: ", point), nil
 }
 
-func NewDice() *Dice {
-    return &Dice{}
-}
