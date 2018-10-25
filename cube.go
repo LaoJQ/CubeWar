@@ -21,8 +21,6 @@ type Cube struct {
 
 // 单个格子数据
 type Square struct {
-    color byte // just for test
-
     propId int // 道具Id
 }
 
@@ -31,17 +29,13 @@ type Proper interface {
     Use(*Cube) (string, error)
 }
 
-
-var ColorQueue []byte = []byte{'Y','W','B','G','O','R'}
-
 func NewCube() *Cube {
     cube := new(Cube)
     for i:=0; i<6; i++ {
         newRole := NewRole(i)
         oneFace := make([]Square, 8)
         for j:=0; j<8; j++ {
-            oneFace[j].color = ColorQueue[i]
-            if newRole != nil && newRole.squareIdx == j { // 初始角色所在格子没有道具
+            if newRole == nil || newRole.squareIdx == j { // 初始角色所在格子没有道具
                 continue
             }
             oneFace[j].propId = GenProp()

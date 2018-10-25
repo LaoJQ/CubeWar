@@ -43,16 +43,16 @@ var RotateRules [][]RotateRule = [][]RotateRule{
         RotateRule{5, []int{4,3,2}},
     },
     []RotateRule{
+        RotateRule{4, []int{0,7,6}},
         RotateRule{2, []int{0,7,6}},
         RotateRule{5, []int{0,7,6}},
         RotateRule{3, []int{4,3,2}},
-        RotateRule{4, []int{0,7,6}},
     },
     []RotateRule{
+        RotateRule{4, []int{6,5,4}},
         RotateRule{0, []int{0,7,6}},
         RotateRule{5, []int{2,1,0}},
         RotateRule{1, []int{4,3,2}},
-        RotateRule{4, []int{6,5,4}},
     },
     []RotateRule{
         RotateRule{0, []int{4,3,2}},
@@ -67,10 +67,10 @@ var RotateRules [][]RotateRule = [][]RotateRule{
         RotateRule{3, []int{2,1,0}},
     },
     []RotateRule{
+        RotateRule{2, []int{6,5,4}},
         RotateRule{0, []int{6,5,4}},
         RotateRule{3, []int{6,5,4}},
         RotateRule{1, []int{6,5,4}},
-        RotateRule{2, []int{6,5,4}},
     },
 }
 
