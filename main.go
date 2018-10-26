@@ -82,6 +82,7 @@ func StartHttp() {
 const PARAM_FACE = "face"
 const PARAM_TARGET = "target"
 const PARAM_CLOCKWISE = "clockWise"
+const PARAM_ATK_GRID = "attackGrid"
 
 func getFace(c *gin.Context) {
     faceStr, ok := c.GetQuery(PARAM_FACE)
@@ -124,13 +125,20 @@ func actRotation(c *gin.Context) {
 }
 
 func actMissile(c *gin.Context) {
-    h2r := &http2room{
-        p : gCube.roles[c.GetInt(PARAM_FACE)].propMissile,
-        retCh : make(chan string, 1),
+    atkGrid, ok := c.GetQuery(PARAM_ATK_GRID)
+    if ok {
+        proper := gCube.roles[c.GetInt(PARAM_FACE)].propMissile
+        proper.atkGrid, _  = strconv.Atoi(atkGrid)
+        h2r := &http2room{
+            p : proper,
+            retCh : make(chan string, 1),
+        }
+        httpDataCh <- h2r
+        retStr :=<- h2r.retCh
+        c.String(http.StatusOK, retStr)
+        return
     }
-    httpDataCh <- h2r
-    retStr :=<- h2r.retCh
-    c.String(http.StatusOK, retStr)
+    c.String(http.StatusOK, "不正确参数")
 }
 
 func actDice(c *gin.Context) {

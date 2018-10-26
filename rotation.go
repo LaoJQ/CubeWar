@@ -99,6 +99,8 @@ func rotate(cube *Cube, rotation *Rotation) {
 
     refreshFace := rules[refreshMove].faceIdx
     for _, refreshGrid := range rules[refreshMove].gridIdx {
-        cube.face[refreshFace][refreshGrid].propId = GenProp()
+        if cube.face[refreshFace][refreshGrid].propId != PROP_RUINED {
+            cube.face[refreshFace][refreshGrid].propId = GenProp()
+        }
     }
 }
