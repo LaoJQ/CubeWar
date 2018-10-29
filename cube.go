@@ -54,6 +54,10 @@ func (cube *Cube) Print() {
     fmt.Printf("|0   1   2   3   4   5   6   7|\n|-   -   -   -   -   -   -   -|\n")
     for i:=0; i<6; i+=2 {
         for _, square := range cube.face[i] {
+            if square.propId == PROP_RUINED {
+                fmt.Print("[x] ")
+                continue
+            }
             fmt.Printf("[%+v] ", square.propId)
         }
         if RoleFace(i) {
@@ -69,6 +73,10 @@ func (cube *Cube) HttpPrint() string {
     var ret string = "|0   1   2   3   4   5   6   7|\n|-   -   -   -   -   -   -   -|\n"
     for i:=0; i<6; i+=2 {
         for _, square := range cube.face[i] {
+            if square.propId == PROP_RUINED {
+                ret += fmt.Sprint("[x] ")
+                continue
+            }
             ret += fmt.Sprintf("[%+v] ", square.propId)
         }
         if RoleFace(i) {
