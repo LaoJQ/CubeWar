@@ -59,6 +59,8 @@ func (role *Role) Move(cube *Cube, point int) {
         role.propBlood.num++
     }
 
-    cube.face[role.faceIdx][role.squareIdx].propId = GenProp()
+    if cube.face[role.faceIdx][role.squareIdx].propId != PROP_RUINED {
+        cube.face[role.faceIdx][role.squareIdx].propId = GenProp()
+    }
     role.squareIdx = newSquareIdx
 }
