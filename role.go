@@ -15,6 +15,7 @@ type Role struct {
     propMissile *Missile // 道具:导弹
     propDice *Dice // 道具:骰子
     propBlood *Blood // 道具:回血
+    propFix *Fix // 道具:修复
 }
 
 const MAX_HP = 5

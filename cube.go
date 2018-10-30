@@ -4,13 +4,14 @@ import (
     "fmt"    
 )
 
-const PROP_TOTAL_NUM = 4
+const PROP_TOTAL_NUM = 5
 const (
     PROP_RUINED = iota - 1 // 被毁坏
     PROP_NULL // 空白格子
     PROP_ROTATE // 旋转
     PROP_MISSILE // 导弹
     PROP_BLOOD // 回血
+    PROP_FIX // 修复
 )
 
 // 魔方整体数据结构
@@ -61,7 +62,7 @@ func (cube *Cube) Print() {
             fmt.Printf("[%+v] ", square.propId)
         }
         if RoleFace(i) {
-            fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num, cube.roles[i].propBlood.num)
+            fmt.Printf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v,%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num, cube.roles[i].propBlood.num, cube.roles[i].propFix.num)
         } else {
             fmt.Println("")
         }
@@ -80,7 +81,7 @@ func (cube *Cube) HttpPrint() string {
             ret += fmt.Sprintf("[%+v] ", square.propId)
         }
         if RoleFace(i) {
-            ret += fmt.Sprintf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num, cube.roles[i].propBlood.num)
+            ret += fmt.Sprintf("batteryOrien:%+v, batteryHP:%+v, roleIn:%+v, prop:(%+v,%+v,%+v,%+v)\n", RotateRules[i][cube.roles[i].batteryOrien].faceIdx, cube.roles[i].batteryHP, cube.roles[i].squareIdx, cube.roles[i].propRotation.num, cube.roles[i].propMissile.num, cube.roles[i].propBlood.num, cube.roles[i].propFix.num)
         } else {
             ret += "\n"
         }

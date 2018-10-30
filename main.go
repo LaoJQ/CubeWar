@@ -70,6 +70,7 @@ func StartHttp() {
     faceGroup.GET("/missile", actMissile) // /act/missile?face=0
     faceGroup.GET("/dice", actDice)  // /act/dice?face=0
     faceGroup.GET("/blood", actBlood)  // /act/blood?face=0
+    faceGroup.GET("/fix", actFix) // /act/fix?face=0&target=12
 
     srv := &http.Server{
         Addr:    "127.0.0.1:8090",
@@ -159,4 +160,24 @@ func actBlood(c *gin.Context) {
     httpDataCh <- h2r
     retStr :=<- h2r.retCh
     c.String(http.StatusOK, retStr)
+}
+
+func actFix(c *gin.Context) {
+    targetStr, ok := c.GetQuery("target")
+    if ok {
+        target, err := strconv.Atoi(targetStr)
+        if err == nil {
+            proper := gCube.roles[c.GetInt(PARAM_FACE)].propFix
+            proper.target = target
+            h2r := &http2room{
+                p : proper,
+                retCh : make(chan string, 1),
+            }
+            httpDataCh <- h2r
+            retStr :=<- h2r.retCh
+            c.String(http.StatusOK, retStr)
+            return
+        }
+    }
+    c.String(http.StatusOK, "不正确参数")
 }
